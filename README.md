@@ -1,6 +1,6 @@
 # Veyra
 
-Premium dark-themed game discovery and ratings platform.
+Premium game discovery and ratings platform.
 
 ## Stack
 - Next.js (App Router) + TypeScript
