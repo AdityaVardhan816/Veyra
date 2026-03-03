@@ -1,0 +1,46 @@
+[
+  {
+    "id": "d7a2e5ee-f26c-48d6-965d-9d4639c8a272",
+    "gameSlug": "resident-evil-4-remake",
+    "userId": "4d433f7f-9345-46f3-843c-fcf27df57be9",
+    "username": "Hazy",
+    "title": "W Game",
+    "body": "Really loved it, would suggest to play",
+    "spoiler": false,
+    "stars": 4.8,
+    "createdAt": "2026-02-27T09:22:42.404Z"
+  },
+  {
+    "id": "b4281d62-8ea5-4c18-b00f-bc6696b7f6ad",
+    "gameSlug": "resident-evil-4-remake",
+    "userId": "4d433f7f-9345-46f3-843c-fcf27df57be9",
+    "username": "Hazy",
+    "title": "W game",
+    "body": "Really good game, would suggest to play",
+    "spoiler": false,
+    "stars": 4,
+    "createdAt": "2026-02-27T09:32:19.459Z"
+  },
+  {
+    "id": "0dcc4e5d-fee6-4f46-80c3-875581ba3942",
+    "gameSlug": "resident-evil-4-remake",
+    "userId": "4d433f7f-9345-46f3-843c-fcf27df57be9",
+    "username": "Hazy",
+    "title": "Great Game",
+    "body": "Love the resident evil series, best",
+    "spoiler": false,
+    "stars": 4.1,
+    "createdAt": "2026-02-27T09:36:10.338Z"
+  },
+  {
+    "id": "129f28a8-eac4-46a9-815a-db91a89010e5",
+    "gameSlug": "resident-evil-4-remake",
+    "userId": "4d433f7f-9345-46f3-843c-fcf27df57be9",
+    "username": "Hazy",
+    "title": "Crazy insane ",
+    "body": "Love this game, really good W WWW W",
+    "spoiler": false,
+    "stars": 3.7,
+    "createdAt": "2026-02-27T09:38:24.425Z"
+  }
+]

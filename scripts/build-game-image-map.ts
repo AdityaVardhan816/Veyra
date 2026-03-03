@@ -1,0 +1,94 @@
+import fs from "node:fs/promises";
+import { games } from "@/lib/mock-data";
+
+const titles = [...new Set(games.map((game) => game.title))];
+const imageByTitle: Record<string, string> = {};
+
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+async function fetchJson(url: string, timeout = 8000): Promise<any | null> {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeout);
+
+  try {
+    const response = await fetch(url, {
+      signal: controller.signal,
+      headers: {
+        "User-Agent": "Veyra/1.0",
+      },
+    });
+
+    if (!response.ok) {
+      return null;
+    }
+
+    return await response.json();
+  } catch {
+    return null;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+async function resolveSummaryImage(title: string): Promise<string | null> {
+  const encodedTitle = encodeURIComponent(title.replaceAll(" ", "_"));
+  const data = await fetchJson(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodedTitle}`, 6000);
+  return data?.originalimage?.source ?? data?.thumbnail?.source ?? null;
+}
+
+async function resolveImage(title: string): Promise<string | null> {
+  const titleVariants = [
+    title,
+    `${title} (video game)`,
+    `${title} (2020 video game)`,
+    `${title} (2021 video game)`,
+    `${title} (2022 video game)`,
+    `${title} (2023 video game)`,
+    `${title} (2024 video game)`,
+  ];
+
+  for (const variant of titleVariants) {
+    const summary = await resolveSummaryImage(variant);
+    if (summary) {
+      return summary;
+    }
+  }
+
+  const query = encodeURIComponent(`${title} video game`);
+  const search = await fetchJson(
+    `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${query}&srlimit=6&format=json`,
+    7000,
+  );
+
+  const candidates = (search?.query?.search ?? []).slice(0, 6);
+
+  for (const candidate of candidates) {
+    const summary = await resolveSummaryImage(candidate.title);
+    if (summary) {
+      return summary;
+    }
+  }
+
+  return null;
+}
+
+async function main() {
+  for (const title of titles) {
+    const imageUrl = await resolveImage(title);
+    if (imageUrl) {
+      imageByTitle[title] = imageUrl;
+    }
+
+    await sleep(100);
+  }
+
+  const output = `export const gameImageByTitle: Record<string, string> = ${JSON.stringify(imageByTitle, null, 2)};\n`;
+  await fs.writeFile("src/lib/game-image-map.ts", output, "utf8");
+
+  console.log(`resolved ${Object.keys(imageByTitle).length} / ${titles.length}`);
+}
+
+main().catch((error) => {
+  console.error(error);
+  process.exit(1);
+});
